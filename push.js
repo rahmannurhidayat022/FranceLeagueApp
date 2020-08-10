@@ -7,10 +7,10 @@ const vapidKeys = {
 
 webPush.setVapidDetails("mailto: rahmannurhidayat022@gmail.com", vapidKeys.publicKey, vapidKeys.privateKey);
 const pushSubscription = {
-  endpoint: "https://fcm.googleapis.com/fcm/send/e1vZ5CxnM-Y:APA91bF8hQ9Kz6qHULLRP0RGVqdQB2KPmMEt72QfxDoHjXqp3jn9g1-9eb_TWJoZMaqsi9ihTqhwqDzWDw9bq3EFAvRZfrAZ8fUe6QKRPxO_BkFiIG_NAhkXbNhH89So8sfmpVk124B3",
+  endpoint: "https://fcm.googleapis.com/fcm/send/cUCQkOEeoH8:APA91bHQTgu-y2lHiuKBoswMJyzf2Or-KUD6Sb_xy5KAQoVXX1IHgw-RyQyfWpg9_UfG51OOLgLUi16l3XwZ1a-5YhvkkizatHdqQovq9GEWLgwEFvwIgWHooqy7k8VEwLPja_k_RcTc",
   keys: {
-    p256dh: "BOj17aqFn4JN4x47Td4IH/I+cHeKXDygH34sJQ4OUPxuo7gwgyX93pYLSfC/0+SZ/nUGVbGMwCyJyqbLMsHXY6s=",
-    auth: "HFsdOhA3F5aed+SZ3O5T4Q==",
+    p256dh: "BDbeatuKTSodCc3O3zUUPJd2O6jmmOQntdbEHx7pJDOF02IOEv+xvnTYyq0q3j538tiklqLhq9x/pxw0FVVL28o=",
+    auth: "djyMJF4C48feJQjz1CneDA==",
   },
 };
 const payload = "Selamat! Aplikasi Anda sudah dapat menerima push notifikasi!";
