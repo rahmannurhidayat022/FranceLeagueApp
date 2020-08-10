@@ -22,7 +22,7 @@ const getSavedMatch = () => {
   getAll().then((matches) => {
     const tableSaved = document.querySelector(".match-saved");
     let value = "";
-    if (matches && matches.length >= 0) {
+    if (matches && matches.length > 0) {
       matches.forEach((match) => {
         value += setTableValue(match);
       });
