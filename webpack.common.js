@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin");
 
 module.exports = {
   entry: "./src/app.js",
@@ -55,6 +56,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/pages/nav.html",
       filename: "nav.html",
+    }),
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, "src/service-worker.js"),
     }),
     new CopyPlugin({
       patterns: [
