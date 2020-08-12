@@ -19,16 +19,10 @@ import runtime from "serviceworker-webpack-plugin/lib/runtime.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   if ("serviceWorker" in navigator) {
-    const registration = await runtime.register();
-    registration
+    await runtime.register()
       .then(status => {
-        if (status.active) {
-          console.log('[SW] Actived!');
-          notification();
-        } else {
-          console.error('[SW] Failed to registration!');
-          throw onerror;
-        }
+        console.log('[SW] Actived! : ' + status);
+        notification();
       })
   } else {
     console.log("ServiceWorker belum didukung browser ini.");
