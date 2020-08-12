@@ -58,16 +58,7 @@ module.exports = {
       filename: "nav.html",
     }),
     new ServiceWorkerWebpackPlugin({
-      entry: path.join(__dirname, "src/service-worker.js"),
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: "./src/service-worker.js",
-          to: "./",
-          context: "./",
-        },
-      ],
+      entry: path.join(__dirname, "src/sw.js"),
     }),
     new CopyPlugin({
       patterns: [

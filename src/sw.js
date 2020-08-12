@@ -1,33 +1,15 @@
+const { assets } = serviceWorkerOption;
+
 const CACHE_NAME = "FL1 App V4";
-let urlsToCache = [
-  "./",
-  "./manifest.json",
-  "./sw.js",
-  "./main.bundle.js",
-  "./index.html",
-  "./nav.html",
-  "./home.html",
-  "./saved.html",
-  "./standings.html",
-  "./images/ballLogo.png",
-  "./images/H01.webp",
-  "./images/H02.webp",
-  "./images/H03.webp",
-  "./images/icons/icon-72x72.png",
-  "./images/icons/icon-96x96.png",
-  "./images/icons/icon-128x128.png",
-  "./images/icons/icon-144x144.png",
-  "./images/icons/icon-152x152.png",
-  "./images/icons/icon-192x192.png",
-  "./images/icons/icon-384x384.png",
-  "./images/icons/icon-512x512.png",
-  "./fonts/MaterialIcons-Regular.woff2",
-  "https://fonts.googleapis.com/icon?family=Material+Icons&display=swap",
-];
+let urlsToCache = [...assets, "./",];
+
+urlsToCache = urlsToCache.map(path => {
+  return new URL(path, global.location).toString()
+})
 
 self.addEventListener("install", function (event) {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function (cache) {
+    global.caches.open(CACHE_NAME).then(function (cache) {
       return cache.addAll(urlsToCache);
     })
   );
@@ -35,12 +17,12 @@ self.addEventListener("install", function (event) {
 
 self.addEventListener("activate", function (event) {
   event.waitUntil(
-    caches.keys().then(function (cacheNames) {
+    global.caches.keys().then(function (cacheNames) {
       return Promise.all(
         cacheNames.map(function (cacheName) {
           if (cacheName != CACHE_NAME) {
             console.log("ServiceWorker: cache " + cacheName + " dihapus");
-            return caches.delete(cacheName);
+            return global.caches.delete(cacheName);
           }
         })
       );
@@ -52,7 +34,7 @@ self.addEventListener("fetch", function (event) {
   const BASE_URL = "https://api.football-data.org/v2/";
   if (event.request.url.indexOf(BASE_URL) > -1) {
     event.respondWith(
-      caches.open(CACHE_NAME).then(function (cache) {
+      global.caches.open(CACHE_NAME).then(function (cache) {
         return fetch(event.request).then(function (response) {
           cache.put(event.request.url, response.clone());
           return response;
@@ -61,7 +43,7 @@ self.addEventListener("fetch", function (event) {
     );
   } else {
     event.respondWith(
-      caches.match(event.request, { ignoreSearch: true }).then(function (response) {
+      global.caches.match(event.request, { ignoreSearch: true }).then(function (response) {
         return response || fetch(event.request);
       })
     );
