@@ -6,7 +6,7 @@ const ENDPOINT = `${enums.BASE_URL}competitions/${enums.LEAGUE_CODE}/standings`;
 
 const getStandings = () => {
   if ("caches" in window) {
-    caches.match(ENDPOINT).then((res) => {
+    global.caches.match(ENDPOINT).then((res) => {
       if (res) {
         res.json().then((data) => {
           showStandings(data);
