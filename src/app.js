@@ -14,27 +14,26 @@ import "./script/component/footer.js";
 import enums from "./script/utils/enums.js";
 import urlBase64 from "./script/helper/urlBase64.js";
 
+//ServiceWorkerWebpackPlugin Registration
+import runtime from "serviceworker-webpack-plugin/lib/runtime.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   if ("serviceWorker" in navigator) {
-    await registerServiceWorker();
+    const registration = await runtime.register();
+    registration
+      .then(status => {
+        if (status.active) {
+          console.log('[SW] Actived!');
+          notification();
+        } else {
+          console.error('[SW] Failed to registration!');
+          throw onerror;
+        }
+      })
   } else {
     console.log("ServiceWorker belum didukung browser ini.");
   }
 });
-
-const registerServiceWorker = () => {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("service-worker.js")
-      .then(() => {
-        console.log("Pendaftaran ServiceWorker berhasil !!");
-        notification();
-      })
-      .catch(() => {
-        console.log("Pendaftaran ServiceWorker gagal");
-      });
-  });
-};
 
 const notification = () => {
   if ("Notification" in window) {
