@@ -22,7 +22,8 @@
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^4.2.2",
+    "webpack-pwa-manifest": "^4.2.0"
   },
   "dependencies": {
     "regenerator-runtime": "^0.13.3",
