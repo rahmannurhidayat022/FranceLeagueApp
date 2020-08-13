@@ -8,7 +8,7 @@ const getStandings = () => {
   if ("caches" in window) {
     caches.match(ENDPOINT).then((res) => {
       if (res) {
-        global.res.json().then((data) => {
+        res.json().then((data) => {
           showStandings(data);
         });
       }
