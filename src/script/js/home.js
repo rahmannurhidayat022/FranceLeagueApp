@@ -9,7 +9,7 @@ const nextMatches = () => {
   return new Promise((resolve, reject) => {
     console.log("caches" in window)
     if ("caches" in window) {
-      global.caches.match(ENDPOINT).then((res) => {
+      caches.match(ENDPOINT).then((res) => {
         if (res) {
           res.json().then((data) => {
             showMatches(data);

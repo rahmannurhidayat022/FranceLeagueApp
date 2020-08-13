@@ -9,7 +9,7 @@ urlsToCache = urlsToCache.map(path => {
 
 self.addEventListener("install", function (event) {
   event.waitUntil(
-    global.caches.open(CACHE_NAME).then(function (cache) {
+    caches.open(CACHE_NAME).then(function (cache) {
       return cache.addAll(urlsToCache);
     })
   );
@@ -17,12 +17,12 @@ self.addEventListener("install", function (event) {
 
 self.addEventListener("activate", function (event) {
   event.waitUntil(
-    global.caches.keys().then(function (cacheNames) {
+    caches.keys().then(function (cacheNames) {
       return Promise.all(
         cacheNames.map(function (cacheName) {
           if (cacheName != CACHE_NAME) {
             console.log("ServiceWorker: cache " + cacheName + " dihapus");
-            return global.caches.delete(cacheName);
+            return caches.delete(cacheName);
           }
         })
       );
@@ -30,11 +30,24 @@ self.addEventListener("activate", function (event) {
   );
 });
 
+self.addEventListener('message', event => {
+  switch (event.data.action) {
+    case 'skipWaiting':
+      if (self.skipWaiting) {
+        self.skipWaiting()
+        self.clients.claim()
+      }
+      break
+    default:
+      break
+  }
+})
+
 self.addEventListener("fetch", function (event) {
   const BASE_URL = "https://api.football-data.org/v2/";
   if (event.request.url.indexOf(BASE_URL) > -1) {
     event.respondWith(
-      global.caches.open(CACHE_NAME).then(function (cache) {
+      caches.open(CACHE_NAME).then(function (cache) {
         return fetch(event.request).then(function (response) {
           cache.put(event.request.url, response.clone());
           return response;
@@ -43,7 +56,7 @@ self.addEventListener("fetch", function (event) {
     );
   } else {
     event.respondWith(
-      global.caches.match(event.request, { ignoreSearch: true }).then(function (response) {
+      caches.match(event.request, { ignoreSearch: true }).then(function (response) {
         return response || fetch(event.request);
       })
     );
