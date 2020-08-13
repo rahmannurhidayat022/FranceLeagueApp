@@ -1,7 +1,19 @@
 const { assets } = serviceWorkerOption;
 
 const CACHE_NAME = "FL1 App V4";
-let urlsToCache = [...assets, "./",];
+let urlsToCache = [
+  ...assets,
+  "./",
+  "./manifest.json",
+  "./icon_72x72.png",
+  "./icon_96x96.png",
+  "./icon_128x128.png",
+  "./icon_144x144.png",
+  "./icon_152x152.png",
+  "./icon_192x192.png",
+  "./icon_384x384.png",
+  "./icon_512x512.png",
+];
 
 urlsToCache = urlsToCache.map(path => {
   return new URL(path, global.location).toString()
