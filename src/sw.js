@@ -1,79 +1,36 @@
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.3/workbox-sw.js');
+
 const { assets } = serviceWorkerOption;
 
-const CACHE_NAME = "FL1 App V4";
-let urlsToCache = [
+workbox.precaching.precacheAndRoute([
   ...assets,
-  "./",
-  "./manifest.json",
-  "./icon_72x72.png",
-  "./icon_96x96.png",
-  "./icon_128x128.png",
-  "./icon_144x144.png",
-  "./icon_152x152.png",
-  "./icon_192x192.png",
-  "./icon_384x384.png",
-  "./icon_512x512.png",
-];
+  { url: './', revision: null },
+  { url: './manifest.json', revision: null },
+  { url: './icon_72x72.png', revision: null },
+  { url: './icon_96x96.png', revision: null },
+  { url: './icon_128x128.png', revision: null },
+  { url: './icon_144x144.png', revision: null },
+  { url: './icon_152x152.png', revision: null },
+  { url: './icon_192x192.png', revision: null },
+  { url: './icon_384x384.png', revision: null },
+  { url: './icon_512x512.png', revision: null },
+], { ignoreURLParametersMatching: [/.*/] });
 
-urlsToCache = urlsToCache.map(path => {
-  return new URL(path, global.location).toString()
-})
-
-self.addEventListener("install", function (event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(function (cache) {
-      return cache.addAll(urlsToCache);
-    })
-  );
-});
-
-self.addEventListener("activate", function (event) {
-  event.waitUntil(
-    caches.keys().then(function (cacheNames) {
-      return Promise.all(
-        cacheNames.map(function (cacheName) {
-          if (cacheName != CACHE_NAME) {
-            console.log("ServiceWorker: cache " + cacheName + " dihapus");
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
-});
-
-self.addEventListener('message', event => {
-  switch (event.data.action) {
-    case 'skipWaiting':
-      if (self.skipWaiting) {
-        self.skipWaiting()
-        self.clients.claim()
-      }
-      break
-    default:
-      break
-  }
-})
-
-self.addEventListener("fetch", function (event) {
-  const BASE_URL = "https://api.football-data.org/v2/";
-  if (event.request.url.indexOf(BASE_URL) > -1) {
-    event.respondWith(
-      caches.open(CACHE_NAME).then(function (cache) {
-        return fetch(event.request).then(function (response) {
-          cache.put(event.request.url, response.clone());
-          return response;
-        });
-      })
-    );
-  } else {
-    event.respondWith(
-      caches.match(event.request, { ignoreSearch: true }).then(function (response) {
-        return response || fetch(event.request);
-      })
-    );
-  }
-});
+workbox.routing.registerRoute(
+  ({ url }) => url.origin === 'https://api.football-data.org',
+  new workbox.strategies.CacheFirst({
+    cacheName: 'football-data',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponse(({
+        statuses: [0, 200, 404],
+        headers: {
+          'Access-Control-Expose-Headers': 'X-Is-Cacheable',
+          'X-Is-Cacheable': 'yes'
+        }
+      }))
+    ]
+  })
+);
 
 self.addEventListener('push', function (event) {
   let body;
