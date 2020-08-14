@@ -24,21 +24,16 @@ const getSavedMatch = () => {
     let value = "";
     if (matches && matches.length > 0) {
       matches.forEach((match) => {
-        value += setTableValue(match);
+        value += _setupCardMatches(match);
       });
       tableSaved.innerHTML = value;
       getIdMatch();
     } else {
       tableSaved.innerHTML = `
-      <tr>
-        <td>Empty</td>
-        <td>Empty</td>
-        <td>VS</td>
-        <td>Empty</td>
-        <td class="center-align">
-            <button class="btn btn-delete red disabled" data-matchid="Empty">Delete</button>
-        </td>
-      </tr>
+      <div class="col s12 center-align">
+        <img src="./images/No-Image.webp" alt="noImage" class="responsive-img">
+        <p>oops..you haven't added a match card yet</p>
+      </div>
       `;
     }
   });
@@ -75,17 +70,37 @@ const _deleteFromDB = (idMatch) => {
   });
 };
 
-const setTableValue = (m) => {
+const _setupCardMatches = (m) => {
   return `
-  <tr>
-    <td>${getDate(m.utcDate)}</td>
-    <td>${m.homeTeam.name}</td>
-    <td>VS</td>
-    <td>${m.awayTeam.name}</td>
-    <td class="center-align">
-          <button class="btn btn-delete red" data-matchid="${m.id}">Delete</button>
-    </td>
-  </tr>
+  <div class="col s12 m6 l4">
+    <div class="card card-matches">
+        <div class="card-image">
+              <img src="./images/card-image.webp" height="200">
+              <span class="card-title black-text">
+                  <b>${getDate(m.utcDate)}</b>
+              </span>
+              <a class="btn-floating btn-large halfway-fab waves-effect waves-light red btn-delete" data-matchid="${m.id}">
+                <i class="material-icons">clear</i>
+              </a>
+        </div>
+        <div class="card-content center-align">
+              <div class="row">
+                  <div class="col s5">
+                        <b>Home Team</b>
+                  </div>
+                  <div class="col s2"></div>
+                  <div class="col s5">
+                        <b>Away Team</b>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col s5">${m.homeTeam.name}</div>
+                  <div class="col s2"> VS </div>
+                  <div class="col s5">${m.awayTeam.name}</div>
+              </div>
+        </div>
+    </div>
+  </div>
   `;
 };
 

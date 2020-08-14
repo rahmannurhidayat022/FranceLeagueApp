@@ -11,7 +11,7 @@ class Footer extends HTMLElement {
     this.innerHTML = `
           <div class="footer-copyright black">
                <div class="container center-align">
-                    © 2020 Copyright Submission 2 PWA | Dicoding.com
+                    © 2020 Copyright Submission 3 PWA | Dicoding.com
                </div>
           </div>
           `;

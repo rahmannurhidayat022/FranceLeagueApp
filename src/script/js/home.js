@@ -44,9 +44,9 @@ const showMatches = (data) => {
   const tableMatches = document.querySelector(".next-match");
   const alertMatch = document.querySelector(".alert-match");
   data.matches.forEach((match) => {
-    value += _setTableValue(match);
+    value += _setupCardMatches(match);
   });
-  tableMatches.innerHTML = _setTable(value);
+  tableMatches.innerHTML = value;
   alertMatch.innerHTML = _setBlockquotes(data.matches[0]);
   _sendIdMatch();
 };
@@ -69,37 +69,38 @@ const _setBlockquotes = (m) => {
   `;
 };
 
-const _setTableValue = (m) => {
+const _setupCardMatches = (m) => {
   return `
-     <tr>
-          <td>${getDate(m.utcDate)}</td>
-          <td>${m.homeTeam.name}</td>
-          <td>VS</td>
-          <td>${m.awayTeam.name}</td>
-          <td class="center-align">
-          <button class="btn save-match" data-matchid="${m.id}">Save</button>
-          </td>
-     </tr>
-     `;
-};
-
-const _setTable = (value) => {
-  return `
-     <table class="responsive-table highlight">
-          <thead>
-               <tr>
-                    <th>Date</th>
-                    <th>Home Team</th>
-                    <th> </th>
-                    <th>Away Team</th>
-                    <th class="center-align">Save Match</th>
-               </tr>
-          </thead> 
-          <tbody>
-               ${value}
-          </tbody>
-     </table>
-     `;
+  <div class="col s12 m6 l4">
+    <div class="card card-matches">
+        <div class="card-image">
+              <img src="./images/card-image.webp" height="200">
+              <span class="card-title black-text">
+                  <b>${getDate(m.utcDate)}</b>
+              </span>
+              <a class="btn-floating btn-large halfway-fab waves-effect waves-light red save-match" data-matchid="${m.id}">
+                <i class="material-icons">add</i>
+              </a>
+        </div>
+        <div class="card-content center-align">
+              <div class="row">
+                  <div class="col s5">
+                        <b>Home Team</b>
+                  </div>
+                  <div class="col s2"></div>
+                  <div class="col s5">
+                        <b>Away Team</b>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col s5">${m.homeTeam.name}</div>
+                  <div class="col s2"> VS </div>
+                  <div class="col s5">${m.awayTeam.name}</div>
+              </div>
+        </div>
+    </div>
+  </div>
+  `;
 };
 
 export default nextMatches;

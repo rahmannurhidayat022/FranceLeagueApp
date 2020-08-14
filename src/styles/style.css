@@ -50,3 +50,7 @@ main {
 .loading {
   margin-top: 40px;
 }
+
+.card-matches {
+  height: 400px;
+}
