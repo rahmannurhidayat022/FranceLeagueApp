@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let sliderInHomePage = document.querySelectorAll(".slider");
             M.Slider.init(sliderInHomePage);
 
-            //ambil jadwal petandingan 
+            //ambil jadwal petandingan
             let matches = nextMatches();
 
             //simpan semua match ke DB
@@ -68,9 +68,19 @@ document.addEventListener("DOMContentLoaded", function () {
             getSavedMatch();
           }
         } else if (this.status == 404) {
-          content.innerHTML = "<p>Halaman tidak ditemukan.</p>";
+          content.innerHTML = `
+          <div class="not-found container center-align">
+            <h1>Ops...</h1>
+            <p>page not available</p>
+          </div>
+          `;
         } else {
-          content.innerHTML = "<p>Ups.. halaman tidak dapat diakses.</p>";
+          content.innerHTML = `
+          <div class="not-found container center-align">
+            <h1>Ops...</h1>
+            <p>the page cannot be accessed</p>
+          </div>
+          `;
         }
       }
     };
