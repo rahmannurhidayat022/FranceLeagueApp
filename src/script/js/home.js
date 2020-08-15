@@ -7,13 +7,13 @@ const ENDPOINT = `${enums.BASE_URL}competitions/${enums.LEAGUE_CODE}/matches?sta
 
 const nextMatches = () => {
   return new Promise((resolve, reject) => {
-    console.log("caches" in window)
+    console.log("caches" in window);
     if ("caches" in window) {
       caches.match(ENDPOINT).then((res) => {
         if (res) {
           res.json().then((data) => {
             showMatches(data);
-            resolve(data)
+            resolve(data);
           });
         }
       });
@@ -35,8 +35,7 @@ const nextMatches = () => {
         }
       })
       .catch(request.Error);
-  }
-  );
+  });
 };
 
 const showMatches = (data) => {
@@ -54,9 +53,11 @@ const showMatches = (data) => {
 const _sendIdMatch = () => {
   const btnSave = document.querySelectorAll(".save-match");
   btnSave.forEach((e) => {
-    e.addEventListener("click", () => {
+    e.addEventListener("click", async () => {
       let idMatch = e.dataset.matchid;
-      dataDB(idMatch);
+      await dataDB(idMatch);
+
+      e.remove();
     });
   });
 };
